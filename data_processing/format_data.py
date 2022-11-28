@@ -15,7 +15,7 @@ def extract_lines(file_path):
     # separate limericks into lines and store in list
     lines = []
     for i in range(len(true_limerick_df)):
-        verses = true_limerick_df['limerick'].iloc[0].split('\n')
+        verses = true_limerick_df['limerick'].iloc[i].split('\n')
         for verse in verses:
             lines.append(verse)
 
