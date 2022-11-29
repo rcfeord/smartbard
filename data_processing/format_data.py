@@ -3,23 +3,27 @@ import cmudict
 
 # file_path = '../raw_data/limerick_dataset_oedilf_v3.json'
 
-def extract_lines(file_path: str) -> list:
+def data_import_df(file_path: str) -> pd.DataFrame:
     """
-    imports data from json file and returns a list of single verse lines from true limericks
+    imports data from json file and returns a pandas DataFrame of true limericks
     """
-
     # import json as DataFrame
     df = pd.read_json(file_path)
     # keep only true limericks
-    true_limerick_df = df[df.is_limerick == True]
+    df = df[df.is_limerick == True]
+    return df
 
+def extract_lines(df: pd.DataFrame) -> list:
+    """
+    imports DataFrame of true limericks
+    returns a list of single verse lines
+    """
     # separate limericks into lines and store in list
     lines = []
-    for i in range(len(true_limerick_df)):
-        verses = true_limerick_df['limerick'].iloc[i].split('\n')
+    for i in range(len(df)):
+        verses = df['limerick'].iloc[i].split('\n')
         for verse in verses:
             lines.append(verse)
-
     return lines
 
 def extract_ab_lines(df: pd.DataFrame) -> list:
@@ -51,8 +55,8 @@ def decompose_word(string: str) -> list:
 
 def word_ending(word: str) -> dict:
     """
-    takes a word (str) as input and returns a list only of 
-    endings (sounds after last stress) 
+    takes a word (str) as input and returns a list only of
+    endings (sounds after last stress)
     """
     ending = []
     sounds = decompose_word(word)
@@ -60,18 +64,18 @@ def word_ending(word: str) -> dict:
     for i in range(len(sounds)):
         if "1" in sounds[i] or "2" in sounds[i]:
             index = i
-            
+
     ending = sounds[index:]
-    
+
     return ending
 
 def dict_of_sounds(list_of_words: list) -> dict:
     """
-    takes a list of words (str) as input and returns a dict 
-    with words as keys and endings as values 
+    takes a list of words (str) as input and returns a dict
+    with words as keys and endings as values
     """
     sounds = {}
     for word in list_of_words:
         sounds[word] = word_ending(word)
-    
+
     return sounds
