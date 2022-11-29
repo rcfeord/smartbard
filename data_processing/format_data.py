@@ -1,4 +1,5 @@
 import pandas as pd
+import cmudict
 
 # file_path = '../raw_data/limerick_dataset_oedilf_v3.json'
 
@@ -35,3 +36,14 @@ def extract_ab_lines(df: pd.DataFrame) -> list:
         b_lines += (x[2:4])
 
     return a_lines, b_lines
+
+def decompose_word(string: str) -> list:
+    """
+    takes a word (str) as input and returns a list with its phonetic decomposition
+    """
+    words = cmudict.entries()
+    words_dict = {}
+    for word in words:
+        words_dict[word[0]] = word[1]
+
+    return words_dict.get(string, 'UNKNOWN')
