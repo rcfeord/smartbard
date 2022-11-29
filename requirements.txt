@@ -30,3 +30,9 @@ termcolor
 
 # data processing
 cmudict
+
+# NLP
+torch
+transformers
+tensorflow==2.9.0
+flax
