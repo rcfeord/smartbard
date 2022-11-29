@@ -47,3 +47,31 @@ def decompose_word(string: str) -> list:
         words_dict[word[0]] = word[1]
 
     return words_dict.get(string, 'UNKNOWN')
+
+
+def word_ending(word: str) -> dict:
+    """
+    takes a word (str) as input and returns a list only of 
+    endings (sounds after last stress) 
+    """
+    ending = []
+    sounds = decompose_word(word)
+    index = 0
+    for i in range(len(sounds)):
+        if "1" in sounds[i] or "2" in sounds[i]:
+            index = i
+            
+    ending = sounds[index:]
+    
+    return ending
+
+def dict_of_sounds(list_of_words: list) -> dict:
+    """
+    takes a list of words (str) as input and returns a dict 
+    with words as keys and endings as values 
+    """
+    sounds = {}
+    for word in list_of_words:
+        sounds[word] = word_ending(word)
+    
+    return sounds
