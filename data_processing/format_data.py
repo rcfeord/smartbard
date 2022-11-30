@@ -91,6 +91,7 @@ def dict_of_endings() -> dict:
         sounds = el[1]
         sounds_reversed = sounds[::-1]
 
+        index = len(sounds)
         for sound in sounds_reversed:
             if "1" in sound or "2" in sound:
                 index = sounds_reversed.index(sound)
