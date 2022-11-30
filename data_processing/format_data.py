@@ -53,7 +53,7 @@ def decompose_word(string: str) -> list:
     return words_dict.get(string, 'UNKNOWN')
 
 
-def word_ending(word: str) -> dict:
+def word_ending(word: str) -> list:
     """
     takes a word (str) as input and returns a list only of
     endings (sounds after last stress)
@@ -69,6 +69,7 @@ def word_ending(word: str) -> dict:
 
     return ending
 
+# DEPRECATED
 def dict_of_sounds(list_of_words: list) -> dict:
     """
     takes a list of words (str) as input and returns a dict
@@ -79,3 +80,23 @@ def dict_of_sounds(list_of_words: list) -> dict:
         sounds[word] = word_ending(word)
 
     return sounds
+
+def dict_of_endings() -> dict:
+    """
+    generates a dict of ending sounds from the cmudict list
+    """
+    endings = {}
+    for el in cmudict.entries():
+        word = el[0]
+        sounds = el[1]
+        sounds_reversed = sounds[::-1]
+
+        for sound in sounds_reversed:
+            if "1" in sound or "2" in sound:
+                index = sounds_reversed.index(sound)
+                break
+
+        ending = sounds_reversed[:index + 1][::-1]
+        endings[word] = ending
+
+    return endings
