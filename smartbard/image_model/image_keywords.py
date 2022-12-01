@@ -22,3 +22,5 @@ def image_to_keywords(image_path:str, num_labels=10) -> pd.DataFrame:
     label = label[0][:]
     keyword_probabilities = pd.DataFrame(label, columns =['Id', 'Label', 'Probability'])
     return keyword_probabilities
+
+#comment
