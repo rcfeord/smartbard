@@ -36,6 +36,7 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
         # extract last real word (containing only alphabetic characters) => 'grenade'
         last_word = [token for token in re.split('[^a-zA-Z]', last_token) if token != ''][-1]
         # get code number for its ending sounds => 8
+        encodings = load_encodings()
         code = encodings.get(last_word, -1)
 
         # add code before last token => ['Should', 'swallow', 'a', '<8>', 'hand-grenade!']
