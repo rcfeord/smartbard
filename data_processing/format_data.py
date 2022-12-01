@@ -91,6 +91,7 @@ def dict_of_endings() -> dict:
         sounds = el[1]
         sounds_reversed = sounds[::-1]
 
+        index = len(sounds)
         for sound in sounds_reversed:
             if "1" in sound or "2" in sound:
                 index = sounds_reversed.index(sound)
@@ -99,4 +100,42 @@ def dict_of_endings() -> dict:
         ending = sounds_reversed[:index + 1][::-1]
         endings[word] = ending
 
+    return endings
+
+def encode_unique_patterns() -> dict:
+    """
+    takes the cmudict endings as input and returns a dict 
+    with words as keys and encoded sound patterns (endings) as values 
+    """
+    
+    # get the endings of the cmudict
+    endings = dict_of_endings()
+    
+    # take only the words from endings
+    
+    words = list(endings.keys())
+    
+    # take only sound patterns from  endings
+    patterns = list(endings.values())
+    
+    # sort the sound patterns alphabetically 
+    sorted_patterns = sorted(patterns)
+    
+    # get only the unique sound patterns
+    unique_patterns = []
+    for pattern in sorted_patterns:
+        if pattern not in unique_patterns:
+            unique_patterns.append(pattern)
+            
+    # encode the unique sound pattern
+    encoded_patterns = {}
+    for key, value in zip(range(1, len(unique_patterns)+1), unique_patterns):
+        encoded_patterns[key] = value
+        
+    # map keys from cmudict endings and keys from encoded patterns (as values)
+    for key, value in endings.items():
+        for key2, value2 in encoded_patterns.items():
+            if value == value2:
+                endings[key] = key2
+    
     return endings
