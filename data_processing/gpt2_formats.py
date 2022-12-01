@@ -16,6 +16,7 @@ def load_encodings() -> dict:
 
     return encodings_dict
 
+
 def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
     """
     add special tokens to the limerick:
@@ -73,6 +74,7 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+
 def limerick_reverse(df: pd.DataFrame, column_name='limerick_tk_added') -> pd.DataFrame:
     """
     reverse the order of the words in a limerick
@@ -89,3 +91,15 @@ def limerick_reverse(df: pd.DataFrame, column_name='limerick_tk_added') -> pd.Da
         # add to new column in df
         df['limerick_tk_reversed'].iloc[i] = reverse_sentence
     return df
+
+
+def all_words_encoded() -> str:
+    """ returns a string with all the words from the cmudict prefixed by their respective tokens """
+    encodings = load_encodings()
+    # instantiate final string
+    final_string = ''
+    for word, code in encodings.items():
+        # add token and word to final string
+        final_string += f'<{code}> {word} '
+
+    return final_string
