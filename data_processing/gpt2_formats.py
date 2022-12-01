@@ -33,11 +33,11 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
         # split verse => ['Should', 'swallow', 'a', 'hand-grenade!']
         token_list = verse.split()
         # get last piece of the verse => 'hand-grenade!'
-        last_token = token_list[-1]
+        last_index = max(loc for loc, val in enumerate(token_list) if re.search('[a-zA-Z]', val))
+        last_token = token_list[last_index]
         # extract last real word (containing only alphabetic characters) => 'grenade'
-        last_word = [token for token in re.split('[^a-zA-Z]', last_token) if token != ''][-1]
+        last_word = [token for token in re.split('[^a-zA-Z]', last_token) if token.isalpha()][-1]
         # get code number for its ending sounds => 8
-        encodings = load_encodings()
         code = encodings.get(last_word, -1)
 
         # add code before last token => ['Should', 'swallow', 'a', '<8>', 'hand-grenade!']
@@ -48,7 +48,8 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
         # return tokenized verse as a string => "Should swallow a <8> hand-grenade!"
         return ' '.join(token_list_reversed[::-1])
 
-
+    # load encodings from json file to a dict
+    encodings = load_encodings()
     # create a new empty column in df
     df['limerick_tk_added'] = ''
     # loop through each limerick
