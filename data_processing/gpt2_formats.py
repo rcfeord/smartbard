@@ -65,6 +65,28 @@ def tokenize_rhymes_with_code(verse: str, encodings: dict) -> str:
     # return tokenized verse as a string => "Should swallow a <8> hand-grenade!"
     return ' '.join(token_list_reversed[::-1])
 
+def tokenize_rhymes_to_code(verse: str, encodings: dict) -> str:
+    """ add <n> tokens to the final word of a verse"""
+    #TODO: extract and then append punctuation to last word
+
+    # example: "Should swallow a hand-grenade!"
+
+    # split verse => ['Should', 'swallow', 'a', 'hand-grenade!']
+    token_list = verse.split()
+    # get last piece of the verse => 'hand-grenade!'
+    last_index = max(loc for loc, val in enumerate(token_list) if re.search('[a-zA-Z]', val))
+    last_token = token_list[last_index]
+    # extract last real word (containing only alphabetic characters) => 'grenade'
+    last_word = [token for token in re.split('[^a-zA-Z]', last_token) if token.isalpha()][-1]
+    # get code number for its ending sounds => 8
+    code = encodings.get(last_word, -1)
+
+    # substitute last token with its code => ['Should', 'swallow', 'a', '<8>']
+    token_list[-1] = f'<{code}>'
+
+    # return tokenized verse as a string => "Should swallow a <8>"
+    return ' '.join(token_list)
+
 
 def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -99,10 +121,13 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
             start_tkn = '<LA> ' if index in (0, 1, 4) else '<LB> ' # token at the start of line
             # end_tkn = ' <LE>' # token at the end of line
 
-            # ALTERNATIVE_1: add rhyme tokens to the last words based on endings
+            ### ALTERNATIVE_1: add rhyme tokens to the last words based on line num
+            # verse = tokenize_rhymes_ab(verse, line_number=index)
+            ### ALTERNATIVE_2: add rhyme tokens to the last words based on endings
             # verse = tokenize_rhymes_with_code(verse, encodings=encodings)
-            # ALTERNATIVE_2: add rhyme tokens to the last words based on line num
-            verse = tokenize_rhymes_ab(verse, line_number=index)
+            ### ALTERNATIVE_3: substitute last words with tokens based on endings
+            verse = tokenize_rhymes_to_code(verse, encodings=encodings)
+
             # append tokenized verse to temp list
             list_temp.append(start_tkn + verse)# + end_tkn)
 
