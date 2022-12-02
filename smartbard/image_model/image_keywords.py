@@ -23,4 +23,15 @@ def image_to_keywords(image_path:str, num_labels=10) -> pd.DataFrame:
     keyword_probabilities = pd.DataFrame(label, columns =['Id', 'Label', 'Probability'])
     return keyword_probabilities
 
-#comment
+def select_keyword(keyword_df: pd.DataFrame, num_keywords=1, proba=None) -> list:
+    """
+    takes a pd.DataFrame with Id, Label, and Probability from image feature detection
+    selects keywords based on either:
+        - number of keywords
+        - probability of accurate label prediction
+    """
+    if proba is not None:
+        keyword_list = pd.Series.to_list(keyword_df['Label'][keyword_df['Probability']>proba])
+    else:
+        keyword_list= pd.Series.to_list(keyword_df['Label'].iloc[:num_keywords])
+    return keyword_list
