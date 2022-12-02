@@ -9,7 +9,10 @@ def extract_noun_keyword(text: str) -> str:
     """
     tokenized = nltk.word_tokenize(text)
     nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if(pos[:2] == 'NN')]
-    return nouns[0]
+    try:                        #            #
+        return nouns[0]         # TEMPORARY  #
+    except:                     # WORKAROUND #
+        return ''               #            #
 
 def df_add_noun_keyword(df: pd.DataFrame, column_name='limerick') -> pd.DataFrame:
     """
