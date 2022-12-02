@@ -50,25 +50,35 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
 
     # load encodings from json file to a dict
     encodings = load_encodings()
+    # create 'limerick start' and 'limerick end' special tokens
+    limerick_start = '<LS>'
+    limerick_end = '<LE> '
+    # create 'keyword start' and 'keyword end' special tokens
+    keyword_start = '<KS>'
+    keyword_end = '<KE>'
     # create a new empty column in df
     df['limerick_tk_added'] = ''
     # loop through each limerick
     for i in range(len(df)):
-        # create the 'limerick start' special token
-        list_temp = ['<LS>']
+        # create keyword
+        keyword = df['noun_keyword'].iloc[i]
+        # create temp list containing limerick start token
+        list_temp = [limerick_start, keyword_start, keyword, keyword_end]
         # split the limerick by line
         verses = df['limerick'].iloc[i].split('\n')
 
-        # add a special tokens
+        # add special tokens to every verse
         for index, verse in enumerate(verses):
             start_tkn = '<LA> ' if index in (0, 1, 4) else '<LB> ' # token at the start of line
-            end_tkn = ' <LE>' # token at the end of line
+            # end_tkn = ' <LE>' # token at the end of line
 
             # add rhyme tokens to the last words
             verse = tokenize_rhymes(verse)
-            # append tokenized verse to list_temp
-            list_temp.append(start_tkn + verse + end_tkn)
+            # append tokenized verse to temp list
+            list_temp.append(start_tkn + verse)# + end_tkn)
 
+        # add limerick end token to temp list
+        list_temp.append(limerick_end)
         # join the strings in the list and add to new df column
         limerick_with_tkns = ' '.join(list_temp)
         df['limerick_tk_added'].iloc[i] = limerick_with_tkns
