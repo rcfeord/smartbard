@@ -104,3 +104,16 @@ def all_words_encoded() -> str:
         final_string += f'<{code}> {word} '
 
     return final_string
+
+def make_rhymes_tokens_dict():
+    """ returns a special_tokens_dict to feed into our model for rhymes recognition """
+    # load rhyme codes
+    encodings = load_encodings()
+
+    # create dict with structure {'code': '<code>'}
+    special_tokens_dict = {}
+    for val in encodings.values():
+        tkn = f'<{val}>'
+        special_tokens_dict[val] = tkn
+
+    return special_tokens_dict
