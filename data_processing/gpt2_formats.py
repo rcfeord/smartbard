@@ -119,17 +119,17 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
         # add special tokens to every verse
         for index, verse in enumerate(verses):
             start_tkn = '<LA> ' if index in (0, 1, 4) else '<LB> ' # token at the start of line
-            # end_tkn = ' <LE>' # token at the end of line
+            end_tkn = f' <L{index}>' # token at the end of line
 
             ### ALTERNATIVE_1: add rhyme tokens to the last words based on line num
             # verse = tokenize_rhymes_ab(verse, line_number=index)
             ### ALTERNATIVE_2: add rhyme tokens to the last words based on endings
             # verse = tokenize_rhymes_with_code(verse, encodings=encodings)
             ### ALTERNATIVE_3: substitute last words with tokens based on endings
-            verse = tokenize_rhymes_to_code(verse, encodings=encodings)
+            # verse = tokenize_rhymes_to_code(verse, encodings=encodings)
 
             # append tokenized verse to temp list
-            list_temp.append(start_tkn + verse)# + end_tkn)
+            list_temp.append(verse + end_tkn)
 
         # add limerick end token to temp list
         list_temp.append(limerick_end)
