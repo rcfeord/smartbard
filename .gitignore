@@ -8,3 +8,5 @@ raw_data/
 .env
 wip/
 build/
+notebooks/
+smartbard/data/
