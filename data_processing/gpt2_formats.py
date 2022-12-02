@@ -115,15 +115,15 @@ def all_words_encoded() -> str:
 
     return final_string
 
-def make_rhymes_tokens_dict():
-    """ returns a special_tokens_dict to feed into our model for rhymes recognition """
+def make_special_tokens_list() -> list:
+    """ returns a special_tokens_list to be used as a value for the
+    'additional_special_tokens' key in the special_tokens_dict"""
     # load rhyme codes
     encodings = load_encodings()
 
-    # create dict with structure {'code': '<code>'}
-    special_tokens_dict = {}
+    # create list with special tokens
+    special_tokens_list = ['<LA>', '<LB>', '<KS>', '<KE>']
     for val in encodings.values():
-        tkn = f'<{val}>'
-        special_tokens_dict[val] = tkn
+        special_tokens_list.append(f'<{val}>')
 
-    return special_tokens_dict
+    return special_tokens_list
