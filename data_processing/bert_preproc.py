@@ -20,14 +20,13 @@ def zorro(limerick: str, *line_numbers: int) -> tuple:
             'line_numbers should be positive ints'
 
     # set line numbers where to and where not to apply mask
-    if not line_numbers:
-        line_numbers = (1,3,4) # default values
-    lines = (0,1,2,3,4)
+    line_numbers = sorted(list(set(line_numbers))) if line_numbers else [1,3,4] # default values
+    lines = [0,1,2,3,4]
     nomask_line_numbers = list(set(lines)-set(line_numbers))
 
     # set masked and unmasked ids based on line_numbers
     masked_ids = ''.join([str(n) for n in line_numbers])
-    unmasked_ids = ''.join([str(n) for n in nomask_line_numbers])
+    unmasked_ids = ''.join([str(n) for n in nomask_line_numbers]) + r'\0'
 
     # define regex patterns
     compile_pattern = lambda ids: fr'([a-zA-Z]+)([^a-zA-Z]*<L[{ids}]>)'
