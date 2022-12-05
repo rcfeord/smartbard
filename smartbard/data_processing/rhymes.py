@@ -1,5 +1,5 @@
 import pandas as pd
-from data_processing.gpt2_formats import load_encodings
+from smartbard.data_processing.gpt2_formats import load_encodings
 
 def bert_to_df_list(bert_words: tuple) -> list:
     """ converts a collection of words returned by BERT to a list of DataFrames
