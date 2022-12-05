@@ -1,7 +1,7 @@
 import pandas as pd
 from data_processing.gpt2_formats import load_encodings
 
-def bert_to_df_list(bert_words: tuple(list(tuple))) -> list(pd.DataFrame):
+def bert_to_df_list(bert_words: tuple) -> list:
     """ converts a collection of words returned by BERT to a list of DataFrames
 
     bert_words has the following format
@@ -55,8 +55,13 @@ def proba_score(df: pd.DataFrame) -> pd.Series:
 
     return total_score
 
-def best_rhymes(df_list: list(pd.DataFrame)) -> list:
-    """ picks best combination of rhyming words """
+def best_rhymes(df_list: list) -> list:
+    """ picks best combination of rhyming words
+
+        df_list is a list of data frames
+
+        ouput is a list of words
+    """
 
     # merge data frames on the condition that words have the same rhyming code
     length = len(df_list)
