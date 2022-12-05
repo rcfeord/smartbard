@@ -8,7 +8,7 @@ def zorro(limerick: str, *line_numbers: int) -> tuple:
     arguments:
         limerick: str
         line_numers (optionals): ints, line numbers to mask
-                                 defaults to 1, 3, 4
+                                 defaults to 0,1,2,3,4 (all lines)
     returns a tuple of len 2:
         output[0]: masked_limerick,
         output[1]: { 'masked':  [(line_num, masked_word),  ... ],
@@ -20,7 +20,7 @@ def zorro(limerick: str, *line_numbers: int) -> tuple:
             'line_numbers should be positive ints'
 
     # set line numbers where to and where not to apply mask
-    line_numbers = sorted(list(set(line_numbers))) if line_numbers else [1,3,4] # default values
+    line_numbers = sorted(list(set(line_numbers))) if line_numbers else [0,1,2,3,4] # default values
     lines = [0,1,2,3,4]
     nomask_line_numbers = list(set(lines)-set(line_numbers))
 
