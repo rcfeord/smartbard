@@ -7,6 +7,7 @@ def extract_noun_keyword(text: str) -> str:
     """
     extracts nouns from text and return the first noun
     """
+    # TODO: fix workaround!
     tokenized = nltk.word_tokenize(text)
     nouns = [word for (word, pos) in nltk.pos_tag(tokenized) if(pos[:2] == 'NN')]
     try:                        #            #
@@ -18,5 +19,7 @@ def df_add_noun_keyword(df: pd.DataFrame, column_name='limerick') -> pd.DataFram
     """
     adds a noun keyword for each limerick to a new column of the pd.DataFrame
     """
+    df = df.copy()
     df['noun_keyword'] = df['limerick'].apply(extract_noun_keyword)
+
     return df
