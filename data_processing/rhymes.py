@@ -16,10 +16,10 @@ def bert_to_df_list(bert_words: tuple) -> list:
     # load rhyme encodings
     encodings = load_encodings()
 
-    def words_list_to_df():
+    def words_list_to_df(words_list):
         # convert the list into a DataFrame
         column_names = ['word', 'probability']
-        words_df = pd.DataFrame(bert_words, columns=column_names)
+        words_df = pd.DataFrame(words_list, columns=column_names)
         # add a column with the rhyme encoding
         code_col = words_df.apply(lambda row: encodings.get(row['word']), axis=1)
         words_df.insert(0, 'code', code_col)
@@ -62,6 +62,7 @@ def best_rhymes(df_list: list) -> list:
 
         ouput is a list of words
     """
+    # TODO: catch exception for when no rhymes combination is found!
 
     # merge data frames on the condition that words have the same rhyming code
     length = len(df_list)
@@ -81,3 +82,29 @@ def best_rhymes(df_list: list) -> list:
     words = [best_combo_df[col].values[0] for col in word_cols]
 
     return words
+
+def make_rhymes(masked_limerick:str, bert_words: tuple) -> str:
+    """ generates final limerick with rhymes
+
+    Args:
+        masked_limerick (str): limerick with [MASK] tokens
+        bert_words (tuple): tuple of words lists found by BERT
+
+    Returns:
+        str: clean rhyming limerick
+    """
+    # separate bert predictions between A and B lines
+    a_words = tuple(bert_words[i] for i in (0,1,4))
+    b_words = tuple(bert_words[i] for i in (2,3))
+    # get best words combinations for A and B lines
+    a_rhymes = best_rhymes(bert_to_df_list(a_words))
+    b_rhymes = best_rhymes(bert_to_df_list(b_words))
+    # create list with all the final rhyming words
+    rhymes = a_rhymes[:2] + b_rhymes + [a_rhymes[2]]
+
+    # substitute masks with rhyming words
+    limerick = masked_limerick
+    for rhyme in rhymes:
+        limerick = limerick.replace('[MASK]', rhyme, 1)
+
+    return limerick
