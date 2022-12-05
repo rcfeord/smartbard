@@ -91,14 +91,14 @@ def tokenize_rhymes_to_code(verse: str, encodings: dict) -> str:
 def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
     """
     add special tokens to the limerick:
-    <LS> at the start of the limerick,
-    <LA> at the start of each A line,
-    <LB> at the start of each B line,
-    <LE> at the end of each line,
-    <n> before every final word on each line, where <n> represents the ending sounds.
+    '<LS>' at the start of the limerick,
+    '<KS> keywords <KE>' right after,
+    '<Ln>' at the end of each line, where 'n' is the line number
+    '<LE>' at the end of the limerick
     """
+    df = df.copy()
     # load encodings from json file to a dict
-    encodings = load_encodings()
+    # encodings = load_encodings()
     # create 'limerick start' and 'limerick end' special tokens
     limerick_start = '<LS>'
     limerick_end = '<LE> '
@@ -118,7 +118,7 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
 
         # add special tokens to every verse
         for index, verse in enumerate(verses):
-            start_tkn = '<LA> ' if index in (0, 1, 4) else '<LB> ' # token at the start of line
+            # start_tkn = '<LA> ' if index in (0, 1, 4) else '<LB> ' # token at the start of line
             end_tkn = f' <L{index}>' # token at the end of line
 
             ### ALTERNATIVE_1: add rhyme tokens to the last words based on line num
@@ -133,9 +133,11 @@ def limerick_add_special_tkns(df: pd.DataFrame) -> pd.DataFrame:
 
         # add limerick end token to temp list
         list_temp.append(limerick_end)
-        # join the strings in the list and add to new df column
+        # join the strings in the list
         limerick_with_tkns = ' '.join(list_temp)
-        df['limerick_tk_added'].iloc[i] = limerick_with_tkns
+        # add string to new df column
+        column_index = df.columns.get_loc('limerick_tk_added')
+        df.iloc[i, column_index] = limerick_with_tkns
 
     return df
 
