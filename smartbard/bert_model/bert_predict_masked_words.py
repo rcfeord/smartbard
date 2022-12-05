@@ -34,6 +34,6 @@ def rhyme_word_pred(masked_lim: str, top_k=50) -> tuple:
 
             temp_list.append(temp_tpl)
 
-        rhyme_list = rhyme_list + (temp_list,)
+    rhyme_list = rhyme_list + (temp_list,)
 
     return rhyme_list
