@@ -68,8 +68,16 @@ def best_rhymes(df_list: list) -> list:
     length = len(df_list)
     if length == 3:
         combos_df = pd.merge(df_list[0], df_list[1], on =['code']).merge(df_list[2], on =['code'])
+        # only take columns with not matching words
+        combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
+        combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word']]
+        combos_df =  combos_df.loc[combos_df['word_y'] != combos_df['word']]
     elif length == 2:
         combos_df = pd.merge(df_list[0], df_list[1], on =['code'])
+        # only take columns with not matching words
+        combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
+        combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
+        
     else:
         raise TypeError('Argument has wrong format')
 
