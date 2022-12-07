@@ -1,5 +1,5 @@
 import pandas as pd
-from smartbard.data_processing.gpt2_formats import load_encodings
+from data_processing.gpt2_formats import load_encodings
 
 def bert_to_df_list(bert_words: tuple) -> list:
     """ converts a collection of words returned by BERT to a list of DataFrames
@@ -82,9 +82,12 @@ def best_rhymes(bert_words: tuple) -> list:
         # only take columns with not matching words
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
-
     else:
         raise TypeError('Argument has wrong format')
+
+    # if no rhyming combination return False
+    if len(combos_df) == 0:
+        return False
 
     # add column with a score for each word combination
     combos_df['score'] = proba_score(combos_df)
@@ -97,7 +100,7 @@ def best_rhymes(bert_words: tuple) -> list:
     return words
 
 
-def make_rhymes(masked_limerick:str, bert_words: tuple) -> str:
+def make_rhymes(bert_words: tuple) -> list:
     """ generates final limerick with rhymes
 
     Args:
@@ -111,11 +114,19 @@ def make_rhymes(masked_limerick:str, bert_words: tuple) -> str:
     a_words = tuple(bert_words[i] for i in (0,1,4))
     b_words = tuple(bert_words[i] for i in (2,3))
     # get best words combinations for A and B lines
-    a_rhymes = best_rhymes(bert_to_df_list(a_words))
-    b_rhymes = best_rhymes(bert_to_df_list(b_words))
+    a_rhymes = best_rhymes(a_words)
+    b_rhymes = best_rhymes(b_words)
+    # return false if not all rhymes are found
+    if not a_rhymes or not b_rhymes:
+        return False
+
     # create list with all the final rhyming words
     rhymes = a_rhymes[:2] + b_rhymes + [a_rhymes[2]]
 
+    return rhymes
+
+def write_rhymes(masked_limerick:str, rhymes: list):
+    """ substitute [MASK] tokens with rhymes """
     # substitute masks with rhyming words
     limerick = masked_limerick
     for rhyme in rhymes:

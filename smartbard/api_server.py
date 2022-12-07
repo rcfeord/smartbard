@@ -1,12 +1,10 @@
-
-import os
-# import uvicorn
+import uvicorn
 from fastapi import FastAPI, UploadFile, File
 import shutil
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from smartbard.smartbard import be_smart_be_bard
+from smartbard import be_smart_be_bard
 
 app = FastAPI()
 dir = Path(Path.cwd().parent, 'img_tmp')
@@ -16,7 +14,7 @@ dir = Path(Path.cwd().parent, 'img_tmp')
 def index():
     return {'OK': 'Welcome to SmartBard API'}
 
-
+# Generate endpoint
 @app.post("/generate")
 def get_image(upload_file: UploadFile = File(...)):
 
