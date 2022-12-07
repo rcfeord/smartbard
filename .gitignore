@@ -2,6 +2,7 @@
 .coverage
 .ipynb_checkpoints
 .DS_Store
+.vscode/
 raw_data/
 *.csv
 **/__pycache__/
@@ -9,4 +10,4 @@ raw_data/
 wip/
 build/
 notebooks/
-smartbard/gpt_2_saved_model
+smartbard/gpt2_model/saved_model/
