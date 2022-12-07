@@ -1,6 +1,3 @@
-#########################
-## THIS IS A DRAFT !!! ##
-#########################
 import sys
 from pathlib import Path
 

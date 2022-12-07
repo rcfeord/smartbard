@@ -55,7 +55,9 @@ def proba_score(df: pd.DataFrame) -> pd.Series:
 
     return total_score
 
-def best_rhymes(df_list: list) -> list:
+
+# def best_rhymes(df_list: list) -> list:
+def best_rhymes(bert_words: tuple) -> list:
     """ picks best combination of rhyming words
 
         df_list is a list of data frames
@@ -63,6 +65,9 @@ def best_rhymes(df_list: list) -> list:
         ouput is a list of words
     """
     # TODO: catch exception for when no rhymes combination is found!
+
+    # converts words returned by BERT to a list of DataFrames
+    df_list = bert_to_df_list(bert_words)
 
     # merge data frames on the condition that words have the same rhyming code
     length = len(df_list)
@@ -77,7 +82,7 @@ def best_rhymes(df_list: list) -> list:
         # only take columns with not matching words
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
-        
+
     else:
         raise TypeError('Argument has wrong format')
 
@@ -90,6 +95,7 @@ def best_rhymes(df_list: list) -> list:
     words = [best_combo_df[col].values[0] for col in word_cols]
 
     return words
+
 
 def make_rhymes(masked_limerick:str, bert_words: tuple) -> str:
     """ generates final limerick with rhymes
