@@ -54,5 +54,5 @@ def be_smart_be_bard(img_path: Path): # generate_limerick sounds too boring
     return final_limerick
 
 
-# if __name__ == '__main__':
-#     be_smart_be_bard(sys.argv[1])
+if __name__ == '__main__':
+    be_smart_be_bard(sys.argv[1])
