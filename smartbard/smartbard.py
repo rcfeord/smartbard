@@ -2,6 +2,7 @@
 ## THIS IS A DRAFT !!! ##
 #########################
 import sys
+from pathlib import Path
 
 from smartbard.image_model.image_keywords import image_to_keywords, select_keyword
 from smartbard.data_processing.bert_preproc import zorro, limerick_cleaner
@@ -11,10 +12,9 @@ from smartbard.gpt2_model.gpt2 import gpt2_generate
 
 KEYWORDS_N = 5 # number of keywords to extract from image
 BEST_KEYWORDS_N = 1 # number of keywords to pick from extracted
-#TODO: do we need both of these? One should suffice
 
 
-def be_smart_be_bard(img_path: str): # generate_limerick sounds too boring
+def be_smart_be_bard(img_path: Path): # generate_limerick sounds too boring
 
     # set image path
     path = img_path # location of image on server, could also be passed as a blob, or pickle or tensor, ...
@@ -28,19 +28,6 @@ def be_smart_be_bard(img_path: str): # generate_limerick sounds too boring
 
     # generate limerick with GPT-2
     generated_limerick = gpt2_generate(start_sequence)
-
-    #### TEMP ##### TODO: delete this
-    # import os
-    # import pandas as pd
-    # import numpy as np
-    # data_folder = '../raw_data/'
-    # data_file = 'limerick_dataset_oedilf_v3.json'
-    # file = os.path.join(data_folder, data_file)
-    # df_raw = pd.read_json(file)
-    # df_raw[df_raw['is_limerick'] == True]
-    # num = np.random.randint(0,100)
-    # limerick = df_raw['limerick'].iloc[num]
-    ##############
 
     # mask final words
     masked_limerick = zorro(generated_limerick)[0]
