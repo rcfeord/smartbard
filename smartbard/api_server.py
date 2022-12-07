@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from smartbard.smartbard import be_smart_be_bard
+from smartbard import be_smart_be_bard
 
 app = FastAPI()
 dir = Path(Path.cwd().parent, 'img_tmp')
