@@ -53,9 +53,11 @@ def limerick_cleaner(limerick:str) -> str:
     step1 = re.sub(r'(<KS>.*<KE>\s)', r'', limerick)
     # substitute '<L#>' with '\n'
     step2 = re.sub(r'(<[A-Z][0123]>\s)', r'\n', step1)
-    # clean up the remaining tokens
+    # clean up the other tokens
     step3 = re.sub(r'(<[A-Z][\w]>\s)', r'', step2)
+    # remove final <LE> token
+    step4 = re.sub(r'(\s<LE>)', r'', step3)
     # strip white spaces
-    limerick_clean = step3.strip()
+    limerick_clean = step4.strip()
 
     return limerick_clean
