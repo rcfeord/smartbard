@@ -1,5 +1,5 @@
 import pandas as pd
-from smartbard.data_processing.gpt2_formats import load_encodings
+from data_processing.gpt2_formats import load_encodings
 
 def bert_to_df_list(bert_words: tuple) -> list:
     """ converts a collection of words returned by BERT to a list of DataFrames
@@ -77,7 +77,7 @@ def best_rhymes(df_list: list) -> list:
         # only take columns with not matching words
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
         combos_df =  combos_df.loc[combos_df['word_x'] != combos_df['word_y']]
-        
+
     else:
         raise TypeError('Argument has wrong format')
 
